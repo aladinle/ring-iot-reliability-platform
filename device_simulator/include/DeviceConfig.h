@@ -14,6 +14,9 @@ struct DeviceConfig {
     double baselineCpuPercent = 24.0;
     double baselineMemoryPercent = 48.0;
     double baselineTemperatureCelsius = 39.5;
+    std::string mqttBrokerHost = "localhost";
+    int mqttBrokerPort = 1883;
+    std::string mqttBaseTopic = "devices/ring-sim-001";
 };
 
 DeviceConfig loadDeviceConfig(const std::string& path);

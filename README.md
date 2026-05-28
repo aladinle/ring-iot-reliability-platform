@@ -69,6 +69,7 @@ Core reliability themes:
 - Bounded periodic telemetry loop for local smoke testing
 - Multithreaded health and watchdog loops
 - MQTT publish/subscribe integration
+- Optional simulator MQTT publishing mode
 - Backend telemetry ingestion endpoint
 - Alert and diagnostics service boundaries
 - Recovery manager decision flow

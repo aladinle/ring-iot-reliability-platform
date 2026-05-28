@@ -71,6 +71,9 @@ DeviceConfig loadDeviceConfig(const std::string& path) {
     config.baselineMemoryPercent = findDouble(content, "baseline_memory_percent", config.baselineMemoryPercent);
     config.baselineTemperatureCelsius =
         findDouble(content, "baseline_temperature_celsius", config.baselineTemperatureCelsius);
+    config.mqttBrokerHost = findString(content, "broker_host", config.mqttBrokerHost);
+    config.mqttBrokerPort = findInt(content, "broker_port", config.mqttBrokerPort);
+    config.mqttBaseTopic = findString(content, "base_topic", "devices/" + config.deviceId);
 
     return config;
 }

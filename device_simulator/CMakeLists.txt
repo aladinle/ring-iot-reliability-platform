@@ -14,6 +14,8 @@ add_library(device_core
     src/TelemetrySerializer.cpp
     src/Watchdog.cpp
     src/HealthMonitor.cpp
+    src/MqttPublisher.cpp
+    src/MqttTopics.cpp
     src/RecoveryManager.cpp
 )
 
@@ -21,6 +23,10 @@ target_include_directories(device_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+if(WIN32)
+    target_link_libraries(device_core PUBLIC ws2_32)
+endif()
 
 add_executable(device_simulator
     src/main.cpp

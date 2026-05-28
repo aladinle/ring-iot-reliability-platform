@@ -6,6 +6,10 @@
   "sample_count": 2,
   "baseline_cpu_percent": 97,
   "baseline_memory_percent": 88,
-  "baseline_temperature_celsius": 72
+  "baseline_temperature_celsius": 72,
+  "mqtt": {
+    "broker_host": "localhost",
+    "broker_port": 1883,
+    "base_topic": "devices/ring-sim-critical"
+  }
 }
-

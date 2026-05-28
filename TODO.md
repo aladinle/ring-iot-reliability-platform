@@ -20,11 +20,13 @@
 
 ## Week 3: MQTT Communication
 
-- Add MQTT client abstraction.
-- Publish telemetry, heartbeat, diagnostics, and recovery events.
-- Define topic naming convention and payload schemas.
-- Add local Mosquitto broker configuration.
-- Add integration test path for broker connectivity.
+- Add MQTT client abstraction. `[done]`
+- Publish telemetry and diagnostics events. `[done]`
+- Define topic naming convention and payload schemas. `[done]`
+- Add local Mosquitto broker configuration. `[done]`
+- Add integration smoke test path for broker connectivity. `[done]`
+- Future enhancement: heartbeat and recovery event publishing.
+- Future enhancement: TLS, authentication, reconnect backoff, and QoS policy.
 
 ## Week 4: Diagnostics Engine
 

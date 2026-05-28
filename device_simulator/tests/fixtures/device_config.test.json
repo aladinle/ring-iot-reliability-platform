@@ -6,5 +6,10 @@
   "sample_count": 2,
   "baseline_cpu_percent": 11.5,
   "baseline_memory_percent": 22.5,
-  "baseline_temperature_celsius": 33.5
+  "baseline_temperature_celsius": 33.5,
+  "mqtt": {
+    "broker_host": "localhost",
+    "broker_port": 1883,
+    "base_topic": "devices/ring-test-001"
+  }
 }

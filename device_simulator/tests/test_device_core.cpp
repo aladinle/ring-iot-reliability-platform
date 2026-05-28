@@ -2,6 +2,7 @@
 #include "Device.h"
 #include "Diagnostics.h"
 #include "HealthMonitor.h"
+#include "MqttTopics.h"
 #include "RecoveryManager.h"
 #include "TelemetrySerializer.h"
 
@@ -59,6 +60,15 @@ int main() {
     assert(config.baselineCpuPercent == 11.5);
     assert(config.baselineMemoryPercent == 22.5);
     assert(config.baselineTemperatureCelsius == 33.5);
+    assert(config.mqttBrokerHost == "localhost");
+    assert(config.mqttBrokerPort == 1883);
+    assert(config.mqttBaseTopic == "devices/ring-test-001");
+
+    const auto topics = ring_iot::buildMqttTopics(config.mqttBaseTopic);
+    assert(topics.telemetry == "devices/ring-test-001/telemetry");
+    assert(topics.diagnostics == "devices/ring-test-001/diagnostics");
+    assert(topics.heartbeat == "devices/ring-test-001/heartbeat");
+    assert(topics.recovery == "devices/ring-test-001/recovery");
 
     const auto payload = ring_iot::serializeTelemetryJson(collected, "test-lab", "2026-05-28T17:00:00Z");
     assert(payload.find("\"schema_version\":\"1.0\"") != std::string::npos);
