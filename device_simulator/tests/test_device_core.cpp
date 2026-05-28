@@ -1,5 +1,6 @@
 #include "DeviceConfig.h"
 #include "Device.h"
+#include "Diagnostics.h"
 #include "HealthMonitor.h"
 #include "RecoveryManager.h"
 #include "TelemetrySerializer.h"
@@ -18,6 +19,24 @@ int main() {
 
     ring_iot::HealthMonitor healthMonitor;
     assert(healthMonitor.evaluate(snapshot) == ring_iot::HealthState::Critical);
+    assert(ring_iot::classifyReasonCode(snapshot) == ring_iot::ReasonCode::HighCpu);
+
+    ring_iot::TelemetrySnapshot degradedSnapshot;
+    degradedSnapshot.cpuPercent = 81.0;
+    degradedSnapshot.memoryPercent = 45.0;
+    degradedSnapshot.temperatureCelsius = 40.0;
+    assert(healthMonitor.evaluate(degradedSnapshot) == ring_iot::HealthState::Degraded);
+    assert(ring_iot::classifyReasonCode(degradedSnapshot) == ring_iot::ReasonCode::HighCpu);
+
+    ring_iot::TelemetrySnapshot memorySnapshot;
+    memorySnapshot.cpuPercent = 30.0;
+    memorySnapshot.memoryPercent = 85.0;
+    assert(ring_iot::classifyReasonCode(memorySnapshot) == ring_iot::ReasonCode::MemoryPressure);
+
+    ring_iot::TelemetrySnapshot thermalSnapshot;
+    thermalSnapshot.temperatureCelsius = 86.0;
+    assert(healthMonitor.evaluate(thermalSnapshot) == ring_iot::HealthState::Critical);
+    assert(ring_iot::classifyReasonCode(thermalSnapshot) == ring_iot::ReasonCode::ThermalPressure);
 
     ring_iot::TelemetryProfile profile;
     profile.baselineCpuPercent = 22.0;
@@ -50,6 +69,20 @@ int main() {
     ring_iot::RecoveryManager recoveryManager;
     assert(recoveryManager.recommendAction(ring_iot::HealthState::Critical) ==
            ring_iot::RecoveryAction::RestartService);
+    assert(recoveryManager.recommendAction(ring_iot::HealthState::Degraded) ==
+           ring_iot::RecoveryAction::ResetNetwork);
+    assert(ring_iot::toString(ring_iot::RecoveryAction::RestartService) == std::string("restart_service"));
+
+    const ring_iot::DiagnosticsEvent event{
+        "test-device",
+        ring_iot::HealthState::Critical,
+        ring_iot::ReasonCode::HighCpu,
+        ring_iot::RecoveryAction::RestartService};
+    const auto diagnosticsPayload = ring_iot::serializeDiagnosticsJson(event, "2026-05-28T17:00:00Z");
+    assert(diagnosticsPayload.find("\"event_type\":\"diagnostics\"") != std::string::npos);
+    assert(diagnosticsPayload.find("\"health_state\":\"critical\"") != std::string::npos);
+    assert(diagnosticsPayload.find("\"reason_code\":\"high_cpu\"") != std::string::npos);
+    assert(diagnosticsPayload.find("\"recommended_action\":\"restart_service\"") != std::string::npos);
 
     device.shutdown();
     assert(device.state() == ring_iot::DeviceState::Offline);

@@ -33,9 +33,9 @@ docker compose -f .\docker\docker-compose.yml up mqtt-broker
 
 ## Next Steps
 
-- Implement basic telemetry snapshot models in C++.
-- Add unit tests for Device, TelemetryManager, and HealthMonitor.
-- Define MQTT payload schemas and topic naming conventions.
+- Start Week 3 MQTT client abstraction.
+- Map simulator telemetry JSON to MQTT publish topics.
+- Add backend MQTT subscriber design before implementation.
 - Add backend data contracts for telemetry and diagnostics events.
 - Decide whether local persistence begins with SQLite, PostgreSQL, or time-series storage.
 

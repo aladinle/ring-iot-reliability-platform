@@ -36,3 +36,23 @@ For a faster smoke test:
 ```powershell
 .\device_simulator\build\Debug\device_simulator.exe .\device_simulator\tests\fixtures\device_config.test.json
 ```
+
+## Reliability Scenarios
+
+Healthy scenario emits telemetry only:
+
+```powershell
+.\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\scenario_healthy.json
+```
+
+Degraded scenario emits telemetry and diagnostics with `high_cpu` plus a `reset_network` recommendation:
+
+```powershell
+.\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\scenario_degraded.json
+```
+
+Critical scenario emits telemetry and diagnostics with a `restart_service` recommendation:
+
+```powershell
+.\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\scenario_critical.json
+```

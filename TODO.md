@@ -10,11 +10,13 @@
 
 ## Week 2: Device Simulator
 
-- Implement device identity, boot state, and lifecycle state machine.
-- Add telemetry generation for CPU, memory, temperature, network, battery, and uptime.
-- Add configurable sampling intervals.
-- Add structured logging.
-- Add unit tests for telemetry state transitions.
+- Implement device identity, boot state, and lifecycle state machine. `[done]`
+- Add telemetry generation for CPU, memory, temperature, and uptime. `[done]`
+- Add configurable sampling intervals and bounded sample count. `[done]`
+- Add diagnostics output for degraded and critical scenarios. `[done]`
+- Add recovery recommendations for degraded and critical health states. `[done]`
+- Add unit tests for telemetry, config loading, diagnostics, and recovery recommendations. `[done]`
+- Future enhancement: add network, battery, and structured log sinks.
 
 ## Week 3: MQTT Communication
 
@@ -63,4 +65,3 @@
 - Add representative tests and CI workflow.
 - Record known limitations and future work.
 - Prepare commit history and demo script.
-

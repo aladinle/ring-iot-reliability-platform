@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(device_core
+    src/Diagnostics.cpp
     src/DeviceConfig.cpp
     src/Device.cpp
     src/TelemetryManager.cpp

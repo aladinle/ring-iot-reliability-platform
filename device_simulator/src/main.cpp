@@ -1,5 +1,6 @@
 #include "DeviceConfig.h"
 #include "Device.h"
+#include "Diagnostics.h"
 #include "HealthMonitor.h"
 #include "RecoveryManager.h"
 #include "TelemetryManager.h"
@@ -38,6 +39,15 @@ int main(int argc, char* argv[]) {
         watchdog.markHeartbeat();
 
         std::cout << serializeTelemetryJson(snapshot, config.siteId, "2026-05-28T17:00:00Z") << '\n';
+
+        if (health != ring_iot::HealthState::Healthy) {
+            const ring_iot::DiagnosticsEvent event{
+                snapshot.deviceId,
+                health,
+                ring_iot::classifyReasonCode(snapshot),
+                action};
+            std::cout << serializeDiagnosticsJson(event, "2026-05-28T17:00:00Z") << '\n';
+        }
 
         if (sampleIndex + 1 < config.sampleCount) {
             std::this_thread::sleep_for(config.telemetryInterval);

@@ -1,0 +1,11 @@
+{
+  "device_id": "ring-sim-healthy",
+  "site_id": "lab-001",
+  "telemetry_interval_ms": 500,
+  "watchdog_timeout_ms": 30000,
+  "sample_count": 2,
+  "baseline_cpu_percent": 24,
+  "baseline_memory_percent": 48,
+  "baseline_temperature_celsius": 39.5
+}
+
