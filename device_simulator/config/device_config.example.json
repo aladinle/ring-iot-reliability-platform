@@ -1,0 +1,19 @@
+{
+  "device_id": "ring-sim-001",
+  "site_id": "lab-001",
+  "telemetry_interval_ms": 1000,
+  "watchdog_timeout_ms": 30000,
+  "thresholds": {
+    "cpu_degraded_percent": 80,
+    "cpu_critical_percent": 95,
+    "memory_degraded_percent": 80,
+    "memory_critical_percent": 95,
+    "temperature_critical_celsius": 85
+  },
+  "mqtt": {
+    "broker_host": "localhost",
+    "broker_port": 1883,
+    "base_topic": "devices/ring-sim-001"
+  }
+}
+
