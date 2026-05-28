@@ -1,0 +1,42 @@
+{
+  "fleet_health": {
+    "healthy": 1,
+    "degraded": 0,
+    "critical": 1
+  },
+  "devices": [
+    {
+      "device_id": "ring-sim-healthy",
+      "health_state": "healthy",
+      "cpu_percent": 24.0,
+      "memory_percent": 48.0,
+      "temperature_celsius": 39.5,
+      "uptime_seconds": 120
+    },
+    {
+      "device_id": "ring-sim-critical",
+      "health_state": "critical",
+      "cpu_percent": 97.0,
+      "memory_percent": 88.0,
+      "temperature_celsius": 72.0,
+      "uptime_seconds": 240
+    }
+  ],
+  "alerts": [
+    {
+      "device_id": "ring-sim-critical",
+      "severity": "critical",
+      "reason_code": "memory_pressure",
+      "recommended_action": "restart_service"
+    }
+  ],
+  "recoveries": [
+    {
+      "device_id": "ring-sim-critical",
+      "action": "restart_service",
+      "result": "started",
+      "attempt": 1
+    }
+  ]
+}
+

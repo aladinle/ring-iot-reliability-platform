@@ -46,8 +46,8 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r backend/requirements.txt
 
-      - name: Run backend tests
-        run: python -m pytest tests/backend
+      - name: Run backend and dashboard tests
+        run: python -m pytest tests/backend tests/dashboard
 
   deploy-placeholder:
     name: Deploy Placeholder
@@ -60,4 +60,3 @@ jobs:
     steps:
       - name: Deployment target not configured
         run: echo "Tests passed. Add real deployment steps here when a target environment exists."
-

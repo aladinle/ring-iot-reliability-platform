@@ -43,6 +43,38 @@ const char* toString(ReasonCode reasonCode) {
         return "memory_pressure";
     case ReasonCode::ThermalPressure:
         return "thermal_pressure";
+    case ReasonCode::HeartbeatTimeout:
+        return "heartbeat_timeout";
+    case ReasonCode::TelemetryStale:
+        return "telemetry_stale";
+    case ReasonCode::RepeatedRecovery:
+        return "repeated_recovery";
+    }
+
+    return "unknown";
+}
+
+Severity severityForHealth(HealthState state) {
+    switch (state) {
+    case HealthState::Healthy:
+        return Severity::Info;
+    case HealthState::Degraded:
+        return Severity::Warning;
+    case HealthState::Critical:
+        return Severity::Critical;
+    }
+
+    return Severity::Info;
+}
+
+const char* toString(Severity severity) {
+    switch (severity) {
+    case Severity::Info:
+        return "info";
+    case Severity::Warning:
+        return "warning";
+    case Severity::Critical:
+        return "critical";
     }
 
     return "unknown";
@@ -72,7 +104,7 @@ std::string serializeDiagnosticsJson(
     output << "\"device_id\":\"" << event.deviceId << "\",";
     output << "\"event_type\":\"diagnostics\",";
     output << "\"health_state\":\"" << toString(event.healthState) << "\",";
-    output << "\"severity\":\"" << (event.healthState == HealthState::Critical ? "critical" : "warning") << "\",";
+    output << "\"severity\":\"" << toString(event.severity) << "\",";
     output << "\"reason_code\":\"" << toString(event.reasonCode) << "\",";
     output << "\"recommended_action\":\"" << toString(event.recommendedAction) << "\",";
     output << "\"observed_at\":\"" << observedAtIso8601 << "\"";
@@ -80,5 +112,16 @@ std::string serializeDiagnosticsJson(
     return output.str();
 }
 
-} // namespace ring_iot
+DiagnosticsEvent DiagnosticsEngine::evaluate(
+    const TelemetrySnapshot& snapshot,
+    HealthState healthState,
+    RecoveryAction recommendedAction) const {
+    return DiagnosticsEvent{
+        snapshot.deviceId,
+        healthState,
+        classifyReasonCode(snapshot),
+        recommendedAction,
+        severityForHealth(healthState)};
+}
 
+} // namespace ring_iot

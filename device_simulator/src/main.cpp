@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
 
     ring_iot::TelemetryManager telemetry(device.id(), profile);
     ring_iot::HealthMonitor healthMonitor;
+    ring_iot::DiagnosticsEngine diagnosticsEngine;
     ring_iot::RecoveryManager recoveryManager;
     ring_iot::Watchdog watchdog(std::chrono::duration_cast<std::chrono::seconds>(config.watchdogTimeout));
     std::unique_ptr<ring_iot::MqttPublisher> mqttPublisher;
@@ -66,7 +67,6 @@ int main(int argc, char* argv[]) {
         const auto snapshot = telemetry.collectSnapshot();
         const auto health = healthMonitor.evaluate(snapshot);
         const auto action = recoveryManager.recommendAction(health);
-        recoveryManager.recordAttempt(action);
         watchdog.markHeartbeat();
 
         const auto telemetryPayload = serializeTelemetryJson(snapshot, config.siteId, "2026-05-28T17:00:00Z");
@@ -77,16 +77,23 @@ int main(int argc, char* argv[]) {
         }
 
         if (health != ring_iot::HealthState::Healthy) {
-            const ring_iot::DiagnosticsEvent event{
-                snapshot.deviceId,
-                health,
-                ring_iot::classifyReasonCode(snapshot),
-                action};
+            const auto event = diagnosticsEngine.evaluate(snapshot, health, action);
             const auto diagnosticsPayload = serializeDiagnosticsJson(event, "2026-05-28T17:00:00Z");
             std::cout << diagnosticsPayload << '\n';
             if (mqttPublisher && !mqttPublisher->publish(topics.diagnostics, diagnosticsPayload)) {
                 std::cerr << "MQTT diagnostics publish failed: " << mqttPublisher->lastError() << '\n';
                 return 4;
+            }
+
+            const auto recoveryEvent = recoveryManager.recordAttempt(
+                snapshot.deviceId,
+                action,
+                ring_iot::toString(event.reasonCode));
+            const auto recoveryPayload = serializeRecoveryJson(recoveryEvent, "2026-05-28T17:00:00Z");
+            std::cout << recoveryPayload << '\n';
+            if (mqttPublisher && !mqttPublisher->publish(topics.recovery, recoveryPayload)) {
+                std::cerr << "MQTT recovery publish failed: " << mqttPublisher->lastError() << '\n';
+                return 5;
             }
         }
 

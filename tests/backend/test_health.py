@@ -60,3 +60,37 @@ def test_telemetry_ingest_returns_critical_state() -> None:
 
     assert response.status_code == 202
     assert response.json()["health_state"] == "critical"
+
+
+def test_diagnostics_ingest_accepts_alert_ready_event() -> None:
+    response = client.post(
+        "/api/diagnostics/ingest",
+        json={
+            "device_id": "ring-sim-critical",
+            "health_state": "critical",
+            "severity": "critical",
+            "reason_code": "memory_pressure",
+            "recommended_action": "restart_service",
+        },
+    )
+
+    assert response.status_code == 202
+    assert response.json()["accepted"] is True
+    assert response.json()["alert_ready"] is True
+
+
+def test_recovery_ingest_records_started_recovery() -> None:
+    response = client.post(
+        "/api/recovery/ingest",
+        json={
+            "device_id": "ring-sim-critical",
+            "action": "restart_service",
+            "result": "started",
+            "attempt": 1,
+            "reason_code": "memory_pressure",
+        },
+    )
+
+    assert response.status_code == 202
+    assert response.json()["accepted"] is True
+    assert response.json()["recovery_recorded"] is True

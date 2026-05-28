@@ -74,6 +74,7 @@ Core reliability themes:
 - Alert and diagnostics service boundaries
 - Recovery manager decision flow
 - Dashboard-ready API surface
+- Dashboard data contracts and operator UI shell
 - AI anomaly detection placeholder pipeline
 - Dockerized backend and MQTT broker setup
 - Unit and integration testing structure

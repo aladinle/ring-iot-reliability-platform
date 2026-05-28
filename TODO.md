@@ -30,27 +30,30 @@
 
 ## Week 4: Diagnostics Engine
 
-- Implement health rules for resource pressure, missed heartbeat, and degraded network.
-- Add severity levels and diagnostic reason codes.
-- Separate detection from alert dispatch.
-- Add backend alert normalization.
-- Add tests for rule evaluation.
+- Implement health rules for resource pressure and thermal pressure. `[done]`
+- Add severity levels and diagnostic reason codes. `[done]`
+- Separate detection from alert dispatch. `[done]`
+- Add backend diagnostics ingestion. `[done]`
+- Add tests for rule evaluation. `[done]`
+- Future enhancement: missed heartbeat and degraded network rules.
 
 ## Week 5: Self-Healing Automation
 
-- Implement recovery manager policy evaluation.
-- Add simulated restart, connection reset, and safe-mode transitions.
-- Add retry backoff and recovery attempt limits.
-- Record recovery audit events.
-- Add safeguards against recovery loops.
+- Implement recovery manager policy evaluation. `[done]`
+- Add simulated restart, connection reset, and safe-mode transitions. `[done]`
+- Add recovery attempt limits. `[done]`
+- Record recovery audit events. `[done]`
+- Add backend recovery ingestion. `[done]`
+- Future enhancement: time-based retry backoff and persistent recovery history.
 
 ## Week 6: Dashboard
 
-- Build Qt dashboard shell.
-- Add fleet overview, device detail, alerts, and recovery history views.
-- Connect dashboard to backend API.
-- Add operator-friendly health status visualization.
-- Document UI workflows.
+- Build Qt dashboard shell. `[done]`
+- Add fleet overview data model. `[done]`
+- Add alerts and recovery history data models. `[done]`
+- Connect dashboard support layer to backend health API. `[done]`
+- Add operator-friendly mock snapshot and tests. `[done]`
+- Future enhancement: full Qt build integration and live backend polling.
 
 ## Week 7: AI Anomaly Detection
 

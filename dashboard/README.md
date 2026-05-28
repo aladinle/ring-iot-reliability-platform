@@ -30,3 +30,14 @@ dashboard/
 
 The dashboard should behave like an operator tool: dense, readable, and optimized for repeated monitoring workflows.
 
+## Day 6 Implementation
+
+Day 6 adds dashboard data contracts and a backend API client that a Qt UI can consume:
+
+- `dashboard/models/dashboard_state.py`
+- `dashboard/services/api_client/client.py`
+- `dashboard/ui/main_window/MainWindow.qml`
+- `dashboard/resources/fleet_snapshot.example.json`
+
+The QML file is a UI shell. The Python data layer is tested in CI so dashboard-facing behavior has executable coverage without requiring Qt to be installed on every build runner.
+

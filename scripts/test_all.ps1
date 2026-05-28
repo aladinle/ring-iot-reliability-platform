@@ -23,7 +23,6 @@ if (-not $SkipCpp) {
 }
 
 Write-Host "Running backend tests..."
-Invoke-Checked { python -m pytest tests\backend }
+Invoke-Checked { python -m pytest tests\backend tests\dashboard }
 
 Write-Host "All tests passed."
-

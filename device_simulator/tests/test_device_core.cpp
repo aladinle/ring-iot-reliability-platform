@@ -76,23 +76,45 @@ int main() {
     assert(payload.find("\"site_id\":\"test-lab\"") != std::string::npos);
     assert(payload.find("\"cpu_percent\":22") != std::string::npos);
 
-    ring_iot::RecoveryManager recoveryManager;
+    ring_iot::RecoveryManager recoveryManager(2);
     assert(recoveryManager.recommendAction(ring_iot::HealthState::Critical) ==
            ring_iot::RecoveryAction::RestartService);
     assert(recoveryManager.recommendAction(ring_iot::HealthState::Degraded) ==
            ring_iot::RecoveryAction::ResetNetwork);
     assert(ring_iot::toString(ring_iot::RecoveryAction::RestartService) == std::string("restart_service"));
 
+    const auto firstRecovery = recoveryManager.recordAttempt(
+        "test-device",
+        ring_iot::RecoveryAction::RestartService,
+        "high_cpu");
+    assert(firstRecovery.result == ring_iot::RecoveryResult::Started);
+    assert(firstRecovery.attempt == 1);
+    assert(recoveryManager.attempts() == 1);
+
+    const auto recoveryPayload = ring_iot::serializeRecoveryJson(firstRecovery, "2026-05-28T17:00:00Z");
+    assert(recoveryPayload.find("\"event_type\":\"recovery\"") != std::string::npos);
+    assert(recoveryPayload.find("\"action\":\"restart_service\"") != std::string::npos);
+    assert(recoveryPayload.find("\"result\":\"started\"") != std::string::npos);
+
     const ring_iot::DiagnosticsEvent event{
         "test-device",
         ring_iot::HealthState::Critical,
         ring_iot::ReasonCode::HighCpu,
-        ring_iot::RecoveryAction::RestartService};
+        ring_iot::RecoveryAction::RestartService,
+        ring_iot::Severity::Critical};
     const auto diagnosticsPayload = ring_iot::serializeDiagnosticsJson(event, "2026-05-28T17:00:00Z");
     assert(diagnosticsPayload.find("\"event_type\":\"diagnostics\"") != std::string::npos);
     assert(diagnosticsPayload.find("\"health_state\":\"critical\"") != std::string::npos);
     assert(diagnosticsPayload.find("\"reason_code\":\"high_cpu\"") != std::string::npos);
     assert(diagnosticsPayload.find("\"recommended_action\":\"restart_service\"") != std::string::npos);
+
+    const ring_iot::DiagnosticsEngine diagnosticsEngine;
+    const auto evaluatedEvent = diagnosticsEngine.evaluate(
+        degradedSnapshot,
+        ring_iot::HealthState::Degraded,
+        ring_iot::RecoveryAction::ResetNetwork);
+    assert(evaluatedEvent.severity == ring_iot::Severity::Warning);
+    assert(evaluatedEvent.reasonCode == ring_iot::ReasonCode::HighCpu);
 
     device.shutdown();
     assert(device.state() == ring_iot::DeviceState::Offline);

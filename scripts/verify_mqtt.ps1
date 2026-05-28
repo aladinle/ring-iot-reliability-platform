@@ -25,7 +25,7 @@ $subscriber = Start-Job -ScriptBlock {
     param($WorkingDirectory)
     Set-Location $WorkingDirectory
     docker compose -f .\docker\docker-compose.yml exec -T mqtt-broker `
-        mosquitto_sub -t "devices/#" -C 2 -W 10 -v
+        mosquitto_sub -t "devices/#" -C 3 -W 10 -v
 } -ArgumentList $repoRoot
 
 Start-Sleep -Seconds 2
@@ -51,5 +51,8 @@ if (-not ($messages -match "devices/ring-sim-degraded/diagnostics")) {
     throw "Diagnostics MQTT message was not observed."
 }
 
-Write-Host "MQTT verification passed."
+if (-not ($messages -match "devices/ring-sim-degraded/recovery")) {
+    throw "Recovery MQTT message was not observed."
+}
 
+Write-Host "MQTT verification passed."

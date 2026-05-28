@@ -1,8 +1,3 @@
-from enum import StrEnum
+from backend.models.events import HealthState
 
-
-class HealthState(StrEnum):
-    HEALTHY = "healthy"
-    DEGRADED = "degraded"
-    CRITICAL = "critical"
-
+__all__ = ["HealthState"]
