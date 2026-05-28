@@ -3,6 +3,10 @@
   "site_id": "lab-001",
   "telemetry_interval_ms": 1000,
   "watchdog_timeout_ms": 30000,
+  "sample_count": 3,
+  "baseline_cpu_percent": 24,
+  "baseline_memory_percent": 48,
+  "baseline_temperature_celsius": 39.5,
   "thresholds": {
     "cpu_degraded_percent": 80,
     "cpu_critical_percent": 95,
@@ -16,4 +20,3 @@
     "base_topic": "devices/ring-sim-001"
   }
 }
-

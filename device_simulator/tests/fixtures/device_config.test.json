@@ -1,0 +1,10 @@
+{
+  "device_id": "ring-test-001",
+  "site_id": "test-lab",
+  "telemetry_interval_ms": 250,
+  "watchdog_timeout_ms": 5000,
+  "sample_count": 2,
+  "baseline_cpu_percent": 11.5,
+  "baseline_memory_percent": 22.5,
+  "baseline_temperature_celsius": 33.5
+}

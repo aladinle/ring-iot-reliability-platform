@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(device_core
+    src/DeviceConfig.cpp
     src/Device.cpp
     src/TelemetryManager.cpp
+    src/TelemetrySerializer.cpp
     src/Watchdog.cpp
     src/HealthMonitor.cpp
     src/RecoveryManager.cpp
@@ -40,4 +42,6 @@ target_link_libraries(device_core_tests
 )
 
 add_test(NAME device_core_tests COMMAND device_core_tests)
-
+set_tests_properties(device_core_tests PROPERTIES
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)

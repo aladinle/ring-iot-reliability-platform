@@ -66,6 +66,7 @@ Core reliability themes:
 ## Target Features
 
 - Device simulator with configurable telemetry generation
+- Bounded periodic telemetry loop for local smoke testing
 - Multithreaded health and watchdog loops
 - MQTT publish/subscribe integration
 - Backend telemetry ingestion endpoint
@@ -149,4 +150,3 @@ Interviewers should be able to see:
 - Add device fleet configuration files.
 - Add model training data and inference validation.
 - Add CI checks for C++, Python, formatting, and tests.
-

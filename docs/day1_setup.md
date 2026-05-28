@@ -21,6 +21,9 @@
 # Build C++ simulator skeleton
 .\scripts\build_cpp.ps1
 
+# Run simulator telemetry snapshots from config
+.\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\device_config.example.json
+
 # Start backend API
 .\scripts\run_backend.ps1
 
@@ -44,4 +47,3 @@ docker compose -f .\docker\docker-compose.yml up mqtt-broker
 - AI anomaly detection needs realistic sample data before model design is meaningful.
 - Dashboard transport should be decided: REST polling first or WebSocket streaming.
 - Test framework choices for C++ are still open.
-
