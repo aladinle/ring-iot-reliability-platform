@@ -57,6 +57,15 @@ const mockSnapshot = {
       result: "started",
       attempt: 1
     }
+  ],
+  anomalies: [
+    {
+      device_id: "ring-sim-critical",
+      score: 0.97,
+      reason: "critical_resource_pressure",
+      severity: "critical",
+      is_anomaly: true
+    }
   ]
 };
 
@@ -85,6 +94,12 @@ function renderSnapshot(snapshot) {
   byId("recoveryList").innerHTML = recoveries.length
     ? recoveries.map(renderRecovery).join("")
     : `<div class="event"><strong>No recovery activity</strong><p>No automated recovery actions recorded.</p></div>`;
+
+  const anomalies = snapshot.anomalies || [];
+  byId("anomalyCount").textContent = `${anomalies.length} scores`;
+  byId("anomalyList").innerHTML = anomalies.length
+    ? anomalies.map(renderAnomaly).join("")
+    : `<div class="event"><strong>No anomaly scores</strong><p>No AI inference results recorded yet.</p></div>`;
 }
 
 function renderDeviceRow(device) {
@@ -103,7 +118,7 @@ function renderDeviceRow(device) {
 function renderAlert(alert) {
   return `
     <div class="event">
-      <strong>${escapeHtml(alert.device_id)} · ${escapeHtml(alert.severity)}</strong>
+      <strong>${escapeHtml(alert.device_id)} - ${escapeHtml(alert.severity)}</strong>
       <p>Reason: ${escapeHtml(alert.reason_code)}<br>Recommended action: ${escapeHtml(alert.recommended_action)}</p>
     </div>
   `;
@@ -112,8 +127,17 @@ function renderAlert(alert) {
 function renderRecovery(recovery) {
   return `
     <div class="event">
-      <strong>${escapeHtml(recovery.device_id)} · ${escapeHtml(recovery.action)}</strong>
+      <strong>${escapeHtml(recovery.device_id)} - ${escapeHtml(recovery.action)}</strong>
       <p>Result: ${escapeHtml(recovery.result)}<br>Attempt: ${Number(recovery.attempt)}</p>
+    </div>
+  `;
+}
+
+function renderAnomaly(anomaly) {
+  return `
+    <div class="event">
+      <strong>${escapeHtml(anomaly.device_id)} - ${escapeHtml(anomaly.severity)}</strong>
+      <p>Score: ${Number(anomaly.score).toFixed(2)}<br>Reason: ${escapeHtml(anomaly.reason)}</p>
     </div>
   `;
 }
@@ -138,8 +162,20 @@ async function refreshBackendHealth() {
     }
     const payload = await response.json();
     byId("backendStatus").textContent = `Backend status: ${payload.status}`;
+    await refreshDashboardSnapshot();
   } catch (error) {
     byId("backendStatus").textContent = "Backend status: unavailable, using mock fleet";
+  }
+}
+
+async function refreshDashboardSnapshot() {
+  const response = await fetch("http://127.0.0.1:8080/api/dashboard/snapshot");
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  const payload = await response.json();
+  if ((payload.devices || []).length > 0) {
+    renderSnapshot(payload);
   }
 }
 
@@ -157,4 +193,3 @@ byId("mockButton").addEventListener("click", () => renderSnapshot(mockSnapshot))
 
 renderSnapshot(mockSnapshot);
 refreshBackendHealth();
-

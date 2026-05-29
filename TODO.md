@@ -1,4 +1,4 @@
-# 8-Week Engineering Roadmap
+# Engineering Roadmap
 
 ## Week 1: Architecture And C++ Skeleton
 
@@ -67,8 +67,24 @@
 
 ## Week 8: Polish And Interview Prep
 
-- Add final diagrams and architecture walkthrough.
-- Improve README and interview talking points.
-- Add representative tests and CI workflow.
-- Record known limitations and future work.
-- Prepare commit history and demo script.
+- Add final diagrams and architecture walkthrough. `[done]`
+- Improve README and interview talking points. `[done]`
+- Add representative tests and CI workflow. `[done]`
+- Record known limitations and future work. `[done]`
+- Prepare commit history and demo script. `[done]`
+
+## Week 9: Backend Event Store And Live Dashboard
+
+- Add in-memory backend event store. `[done]`
+- Add live dashboard snapshot endpoint. `[done]`
+- Record telemetry, diagnostics, recovery, and anomaly events. `[done]`
+- Connect dashboard refresh flow to backend snapshot. `[done]`
+- Future enhancement: replace in-memory store with SQLite or time-series storage.
+
+## Week 10: Hardening And Release Readiness
+
+- Add dashboard snapshot integration tests. `[done]`
+- Add demo data seeding script. `[done]`
+- Add final demo runbook. `[done]`
+- Verify full test suite and MQTT smoke test. `[done]`
+- Future enhancement: formatting, linting, release artifacts, and deployment target.

@@ -18,6 +18,7 @@ def test_web_dashboard_contains_interactive_controls() -> None:
 
     assert 'id="refreshButton"' in html
     assert 'id="mockButton"' in html
+    assert 'id="anomalyList"' in html
     assert "renderSnapshot" in script
     assert "refreshBackendHealth" in script
-
+    assert "/api/dashboard/snapshot" in script

@@ -40,6 +40,10 @@ The architecture treats telemetry as a lifecycle: collection, validation, normal
 
 Anomaly detection is most valuable when it identifies reliability patterns that static thresholds miss, such as gradual degradation, unusual resource combinations, or fleet-wide behavior shifts.
 
+## 11. Demo-Ready Operator Workflow
+
+The project includes a local dashboard, backend event store, and demo data seeding path. This makes it possible to show the full reliability story from telemetry ingestion through diagnostics, recovery, anomaly scoring, and operator visibility.
+
 ## Architecture Decisions
 
 - Use MQTT for device-originated communication.
@@ -70,4 +74,3 @@ The intended simulator can use dedicated loops for telemetry, health monitoring,
 - C++17: Embedded Linux realism, performance, and modern language features.
 - FastAPI: Typed backend surface with fast iteration.
 - AI anomaly detection: Adds long-horizon and fleet-level reliability insight.
-

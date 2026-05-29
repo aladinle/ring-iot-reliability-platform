@@ -48,7 +48,7 @@ Core reliability themes:
                     v
         +-----------------------+
         | Monitoring Dashboard  |
-        | Qt-based operator UI  |
+        | Web demo / Qt shell   |
         +-----------------------+
 ```
 
@@ -87,7 +87,7 @@ Core reliability themes:
 | Device simulator | C++17, CMake, embedded Linux patterns |
 | Messaging | MQTT, topic-based telemetry routing |
 | Backend | Python, FastAPI, Pydantic |
-| Dashboard | Qt architecture placeholder |
+| Dashboard | Static web dashboard, Qt architecture placeholder |
 | AI engine | Python, anomaly detection pipeline |
 | DevOps | Docker, PowerShell scripts |
 | Testing | C++ unit test structure, Python backend tests |
@@ -96,18 +96,18 @@ Core reliability themes:
 
 ```text
 ring-iot-reliability-platform/
-├── ai_engine/
-├── backend/
-├── dashboard/
-├── device_simulator/
-├── docker/
-├── docs/
-├── scripts/
-├── tests/
-├── tools/
-├── README.md
-├── TODO.md
-└── .gitignore
+|-- ai_engine/
+|-- backend/
+|-- dashboard/
+|-- device_simulator/
+|-- docker/
+|-- docs/
+|-- scripts/
+|-- tests/
+|-- tools/
+|-- README.md
+|-- TODO.md
+`-- .gitignore
 ```
 
 ## MVP Roadmap
@@ -120,6 +120,38 @@ ring-iot-reliability-platform/
 6. Create dashboard views for fleet health and device detail.
 7. Integrate anomaly detection inference.
 8. Polish documentation, tests, and interview walkthrough.
+
+## Local Demo
+
+Run validation:
+
+```powershell
+.\scripts\test_all.ps1
+```
+
+Start the backend:
+
+```powershell
+.\scripts\run_backend.ps1 -Port 8080
+```
+
+Seed demo data:
+
+```powershell
+.\scripts\seed_demo_data.ps1 -Port 8080
+```
+
+Open the dashboard:
+
+```powershell
+Start-Process .\dashboard\web\index.html
+```
+
+Verify MQTT:
+
+```powershell
+.\scripts\verify_mqtt.ps1
+```
 
 ## Reliability And Self-Healing Goals
 
@@ -145,8 +177,7 @@ Interviewers should be able to see:
 
 ## Future Improvements
 
-- Add real MQTT integration with Eclipse Mosquitto.
-- Add persistent telemetry storage.
+- Replace the in-memory event store with durable telemetry storage.
 - Add WebSocket streaming for dashboard updates.
 - Implement watchdog timeout simulation.
 - Add Prometheus-style metrics exports.

@@ -1,9 +1,14 @@
 from fastapi.testclient import TestClient
 
 from backend.main import app
+from backend.services.event_store import event_store
 
 
 client = TestClient(app)
+
+
+def setup_function() -> None:
+    event_store.clear()
 
 
 def test_health_check() -> None:
@@ -112,3 +117,56 @@ def test_anomaly_score_returns_warning_for_degraded_telemetry() -> None:
     assert response.json()["device_id"] == "ring-sim-degraded"
     assert response.json()["is_anomaly"] is True
     assert response.json()["severity"] == "warning"
+
+
+def test_dashboard_snapshot_returns_live_ingested_events() -> None:
+    client.post(
+        "/api/telemetry/ingest",
+        json={
+            "device_id": "ring-sim-critical",
+            "cpu_percent": 97,
+            "memory_percent": 88,
+            "temperature_celsius": 72,
+            "uptime_seconds": 240,
+        },
+    )
+    client.post(
+        "/api/diagnostics/ingest",
+        json={
+            "device_id": "ring-sim-critical",
+            "health_state": "critical",
+            "severity": "critical",
+            "reason_code": "memory_pressure",
+            "recommended_action": "restart_service",
+        },
+    )
+    client.post(
+        "/api/recovery/ingest",
+        json={
+            "device_id": "ring-sim-critical",
+            "action": "restart_service",
+            "result": "started",
+            "attempt": 1,
+            "reason_code": "memory_pressure",
+        },
+    )
+    client.post(
+        "/api/anomaly/score",
+        json={
+            "device_id": "ring-sim-critical",
+            "cpu_percent": 97,
+            "memory_percent": 88,
+            "temperature_celsius": 72,
+            "uptime_seconds": 240,
+        },
+    )
+
+    response = client.get("/api/dashboard/snapshot")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["fleet_health"]["critical"] == 1
+    assert payload["devices"][0]["device_id"] == "ring-sim-critical"
+    assert payload["alerts"][0]["reason_code"] == "memory_pressure"
+    assert payload["recoveries"][0]["action"] == "restart_service"
+    assert payload["anomalies"][0]["is_anomaly"] is True

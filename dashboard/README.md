@@ -56,5 +56,8 @@ The web dashboard provides:
 - Device telemetry table.
 - Diagnostics list.
 - Recovery history list.
+- Anomaly scores.
 - Backend health refresh button.
 - Mock fleet reload button.
+
+When the backend is running at `http://127.0.0.1:8080`, the Refresh button also loads `GET /api/dashboard/snapshot`.

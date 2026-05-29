@@ -17,3 +17,15 @@ FastAPI backend for telemetry ingestion, diagnostics coordination, alert process
 .\scripts\run_backend.ps1
 ```
 
+## Endpoints
+
+```text
+GET  /health
+POST /api/telemetry/ingest
+POST /api/diagnostics/ingest
+POST /api/recovery/ingest
+POST /api/anomaly/score
+GET  /api/dashboard/snapshot
+```
+
+The dashboard snapshot endpoint is backed by an in-memory event store for local demos. It is intentionally simple and can be replaced by durable storage later.
