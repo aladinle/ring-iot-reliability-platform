@@ -32,6 +32,8 @@ pytest-cache-files-*/
 # Logs and runtime data
 logs/
 *.log
+data/*.db
+data/*.db-*
 device_simulator/logs/*
 !device_simulator/logs/.gitkeep
 

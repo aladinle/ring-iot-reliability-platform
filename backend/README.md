@@ -28,9 +28,23 @@ POST /api/diagnostics/ingest
 POST /api/recovery/ingest
 POST /api/anomaly/score
 GET  /api/dashboard/snapshot
+GET  /api/dashboard/history
 ```
 
 The dashboard snapshot endpoint is backed by an in-memory event store for local demos. It is intentionally simple and can be replaced by durable storage later.
+
+The dashboard history endpoint is backed by SQLite and persists:
+
+- telemetry events
+- diagnostics events
+- recovery events
+- anomaly scores
+
+Default database:
+
+```text
+data/ring_iot.db
+```
 
 Demo credentials:
 

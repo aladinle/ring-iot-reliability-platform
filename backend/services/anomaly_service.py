@@ -1,6 +1,7 @@
 from ai_engine.inference.service import AnomalyInferenceService
 from backend.models.dashboard import AnomalyState
 from backend.models.telemetry import AnomalyScoreRequest, AnomalyScoreResponse
+from backend.database.store import event_repository
 from backend.services.event_store import event_store
 
 
@@ -25,13 +26,13 @@ class AnomalyService:
             severity=score.severity,
             is_anomaly=score.is_anomaly,
         )
-        event_store.record_anomaly(
-            AnomalyState(
-                device_id=response.device_id,
-                score=response.score,
-                reason=response.reason,
-                severity=response.severity,
-                is_anomaly=response.is_anomaly,
-            )
+        anomaly = AnomalyState(
+            device_id=response.device_id,
+            score=response.score,
+            reason=response.reason,
+            severity=response.severity,
+            is_anomaly=response.is_anomaly,
         )
+        event_store.record_anomaly(anomaly)
+        event_repository.record_anomaly(anomaly)
         return response

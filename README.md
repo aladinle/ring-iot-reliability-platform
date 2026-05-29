@@ -77,6 +77,7 @@ Core reliability themes:
 - Dashboard data contracts and operator UI shell
 - AI anomaly detection placeholder pipeline
 - Interactive web dashboard for local demos
+- SQLite event history with MySQL-ready repository boundary
 - Dockerized backend and MQTT broker setup
 - Unit and integration testing structure
 
@@ -151,6 +152,12 @@ Verify MQTT:
 
 ```powershell
 .\scripts\verify_mqtt.ps1
+```
+
+Persisted history is available through:
+
+```text
+GET /api/dashboard/history
 ```
 
 ## Reliability And Self-Healing Goals

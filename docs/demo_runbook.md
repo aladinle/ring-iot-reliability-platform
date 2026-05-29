@@ -48,7 +48,23 @@ Demo login:
 operator / operator123
 ```
 
-## 5. Show MQTT Flow
+## 5. Check Persisted History
+
+After logging in through the API:
+
+```powershell
+$login = Invoke-RestMethod `
+  -Uri "http://127.0.0.1:8080/api/auth/login" `
+  -Method Post `
+  -ContentType "application/json" `
+  -Body '{"username":"operator","password":"operator123"}'
+
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:8080/api/dashboard/history" `
+  -Headers @{ Authorization = "Bearer $($login.access_token)" }
+```
+
+## 6. Show MQTT Flow
 
 ```powershell
 .\scripts\verify_mqtt.ps1

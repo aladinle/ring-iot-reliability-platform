@@ -87,4 +87,6 @@
 - Add demo data seeding script. `[done]`
 - Add final demo runbook. `[done]`
 - Verify full test suite and MQTT smoke test. `[done]`
+- Add SQLite persistence for telemetry, diagnostics, recovery, and anomaly history. `[done]`
+- Keep storage behind a repository boundary for future MySQL migration. `[done]`
 - Future enhancement: formatting, linting, release artifacts, and deployment target.

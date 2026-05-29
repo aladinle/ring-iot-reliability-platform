@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from backend.main import app
+from backend.database.store import event_repository
 from backend.services.event_store import event_store
 from backend.services.auth_service import auth_service
 
@@ -10,6 +11,7 @@ client = TestClient(app)
 
 def setup_function() -> None:
     event_store.clear()
+    event_repository.clear()
     auth_service.clear()
 
 
@@ -42,6 +44,12 @@ def test_auth_login_and_me() -> None:
 
 def test_dashboard_snapshot_requires_session() -> None:
     response = client.get("/api/dashboard/snapshot")
+
+    assert response.status_code == 403
+
+
+def test_dashboard_history_requires_session() -> None:
+    response = client.get("/api/dashboard/history")
 
     assert response.status_code == 403
 
@@ -201,4 +209,60 @@ def test_dashboard_snapshot_returns_live_ingested_events() -> None:
     assert payload["devices"][0]["device_id"] == "ring-sim-critical"
     assert payload["alerts"][0]["reason_code"] == "memory_pressure"
     assert payload["recoveries"][0]["action"] == "restart_service"
+    assert payload["anomalies"][0]["is_anomaly"] is True
+
+
+def test_dashboard_history_returns_persisted_events() -> None:
+    token = login_token()
+    client.post(
+        "/api/telemetry/ingest",
+        json={
+            "device_id": "ring-sim-history",
+            "cpu_percent": 42,
+            "memory_percent": 55,
+            "temperature_celsius": 38.5,
+            "uptime_seconds": 120,
+        },
+    )
+    client.post(
+        "/api/diagnostics/ingest",
+        json={
+            "device_id": "ring-sim-history",
+            "health_state": "degraded",
+            "severity": "warning",
+            "reason_code": "high_cpu",
+            "recommended_action": "reset_network",
+        },
+    )
+    client.post(
+        "/api/recovery/ingest",
+        json={
+            "device_id": "ring-sim-history",
+            "action": "reset_network",
+            "result": "started",
+            "attempt": 1,
+            "reason_code": "high_cpu",
+        },
+    )
+    client.post(
+        "/api/anomaly/score",
+        json={
+            "device_id": "ring-sim-history",
+            "cpu_percent": 84,
+            "memory_percent": 61,
+            "temperature_celsius": 52,
+            "uptime_seconds": 180,
+        },
+    )
+
+    response = client.get(
+        "/api/dashboard/history?limit=10",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["telemetry"][0]["device_id"] == "ring-sim-history"
+    assert payload["diagnostics"][0]["reason_code"] == "high_cpu"
+    assert payload["recovery"][0]["action"] == "reset_network"
     assert payload["anomalies"][0]["is_anomaly"] is True
