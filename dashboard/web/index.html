@@ -14,7 +14,7 @@
           <p id="backendStatus">Backend status: not checked</p>
           <p id="sessionStatus">Session: signed out</p>
         </div>
-        <div class="actions">
+        <div id="dashboardActions" class="actions hidden">
           <button id="refreshButton" type="button">Refresh</button>
           <button id="historyButton" type="button">Load History</button>
           <button id="mockButton" type="button">Load Mock Fleet</button>
@@ -22,9 +22,10 @@
         </div>
       </header>
 
-      <section class="login-panel" aria-label="Operator login">
+      <section id="loginView" class="login-card" aria-label="Operator login">
         <div>
           <h2>Operator Session</h2>
+          <p>Login is required before the monitoring dashboard is visible.</p>
           <p>Demo login: operator / operator123</p>
         </div>
         <form id="loginForm">
@@ -34,89 +35,91 @@
         </form>
       </section>
 
-      <section class="login-panel" aria-label="Dashboard refresh mode">
-        <div>
-          <h2>Live Mode</h2>
-          <p id="autoRefreshStatus">Auto refresh: off</p>
-        </div>
-        <label class="toggle-row">
-          <input id="autoRefreshToggle" type="checkbox">
-          Refresh every 5 seconds
-        </label>
-      </section>
-
-      <section class="summary-grid" aria-label="Fleet health summary">
-        <article class="metric healthy">
-          <span>Healthy</span>
-          <strong id="healthyCount">0</strong>
-        </article>
-        <article class="metric degraded">
-          <span>Degraded</span>
-          <strong id="degradedCount">0</strong>
-        </article>
-        <article class="metric critical">
-          <span>Critical</span>
-          <strong id="criticalCount">0</strong>
-        </article>
-      </section>
-
-      <section class="workspace">
-        <section class="panel">
-          <div class="panel-header">
-            <h2>Fleet</h2>
-            <span id="deviceCount">0 devices</span>
+      <div id="dashboardView" class="hidden">
+        <section class="login-panel" aria-label="Dashboard refresh mode">
+          <div>
+            <h2>Live Mode</h2>
+            <p id="autoRefreshStatus">Auto refresh: off</p>
           </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Device</th>
-                  <th>State</th>
-                  <th>CPU</th>
-                  <th>Memory</th>
-                  <th>Temp</th>
-                  <th>Uptime</th>
-                </tr>
-              </thead>
-              <tbody id="deviceRows"></tbody>
-            </table>
-          </div>
+          <label class="toggle-row">
+            <input id="autoRefreshToggle" type="checkbox">
+            Refresh every 5 seconds
+          </label>
         </section>
 
-        <aside class="side-stack">
+        <section class="summary-grid" aria-label="Fleet health summary">
+          <article class="metric healthy">
+            <span>Healthy</span>
+            <strong id="healthyCount">0</strong>
+          </article>
+          <article class="metric degraded">
+            <span>Degraded</span>
+            <strong id="degradedCount">0</strong>
+          </article>
+          <article class="metric critical">
+            <span>Critical</span>
+            <strong id="criticalCount">0</strong>
+          </article>
+        </section>
+
+        <section class="workspace">
           <section class="panel">
             <div class="panel-header">
-              <h2>Diagnostics</h2>
-              <span id="alertCount">0 alerts</span>
+              <h2>Fleet</h2>
+              <span id="deviceCount">0 devices</span>
             </div>
-            <div id="alertList" class="event-list"></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Device</th>
+                    <th>State</th>
+                    <th>CPU</th>
+                    <th>Memory</th>
+                    <th>Temp</th>
+                    <th>Uptime</th>
+                  </tr>
+                </thead>
+                <tbody id="deviceRows"></tbody>
+              </table>
+            </div>
           </section>
 
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Recovery</h2>
-              <span id="recoveryCount">0 events</span>
-            </div>
-            <div id="recoveryList" class="event-list"></div>
-          </section>
+          <aside class="side-stack">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Diagnostics</h2>
+                <span id="alertCount">0 alerts</span>
+              </div>
+              <div id="alertList" class="event-list"></div>
+            </section>
 
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Anomalies</h2>
-              <span id="anomalyCount">0 scores</span>
-            </div>
-            <div id="anomalyList" class="event-list"></div>
-          </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Recovery</h2>
+                <span id="recoveryCount">0 events</span>
+              </div>
+              <div id="recoveryList" class="event-list"></div>
+            </section>
 
-          <section class="panel">
-            <div class="panel-header">
-              <h2>History</h2>
-              <span id="historyCount">0 records</span>
-            </div>
-            <div id="historyList" class="event-list"></div>
-          </section>
-        </aside>
-      </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Anomalies</h2>
+                <span id="anomalyCount">0 scores</span>
+              </div>
+              <div id="anomalyList" class="event-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>History</h2>
+                <span id="historyCount">0 records</span>
+              </div>
+              <div id="historyList" class="event-list"></div>
+            </section>
+          </aside>
+        </section>
+      </div>
     </main>
     <script src="app.js"></script>
   </body>

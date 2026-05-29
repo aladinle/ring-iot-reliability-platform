@@ -275,6 +275,7 @@ async function login(event) {
 function logout() {
   sessionStorage.removeItem(sessionKey);
   updateSessionStatus();
+  setDashboardVisible(false);
 }
 
 function getSession() {
@@ -294,9 +295,24 @@ function updateSessionStatus() {
   const session = getSession();
   if (!session) {
     byId("sessionStatus").textContent = "Session: signed out";
+    setDashboardVisible(false);
     return;
   }
   byId("sessionStatus").textContent = `Session: ${session.username} (${session.role})`;
+  setDashboardVisible(true);
+}
+
+function setDashboardVisible(visible) {
+  byId("loginView").classList.toggle("hidden", visible);
+  byId("dashboardView").classList.toggle("hidden", !visible);
+  byId("dashboardActions").classList.toggle("hidden", !visible);
+
+  if (!visible && autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
+    byId("autoRefreshToggle").checked = false;
+    byId("autoRefreshStatus").textContent = "Auto refresh: off";
+  }
 }
 
 function toggleAutoRefresh() {
@@ -330,6 +346,5 @@ byId("logoutButton").addEventListener("click", logout);
 byId("loginForm").addEventListener("submit", login);
 byId("autoRefreshToggle").addEventListener("change", toggleAutoRefresh);
 
-renderSnapshot(mockSnapshot);
 updateSessionStatus();
 refreshBackendHealth();

@@ -20,6 +20,9 @@ def test_web_dashboard_contains_interactive_controls() -> None:
     assert 'id="historyButton"' in html
     assert 'id="mockButton"' in html
     assert 'id="loginForm"' in html
+    assert 'id="loginView"' in html
+    assert 'id="dashboardView" class="hidden"' in html
+    assert 'id="dashboardActions" class="actions hidden"' in html
     assert 'id="sessionStatus"' in html
     assert 'id="anomalyList"' in html
     assert 'id="historyList"' in html
@@ -31,3 +34,5 @@ def test_web_dashboard_contains_interactive_controls() -> None:
     assert "sessionStorage" in script
     assert "/api/auth/login" in script
     assert "/api/dashboard/snapshot" in script
+    assert "setDashboardVisible" in script
+    assert "renderSnapshot(mockSnapshot);" not in script
