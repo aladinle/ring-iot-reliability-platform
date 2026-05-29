@@ -17,12 +17,17 @@ def test_web_dashboard_contains_interactive_controls() -> None:
     script = (ROOT / "dashboard" / "web" / "app.js").read_text(encoding="utf-8")
 
     assert 'id="refreshButton"' in html
+    assert 'id="historyButton"' in html
     assert 'id="mockButton"' in html
     assert 'id="loginForm"' in html
     assert 'id="sessionStatus"' in html
     assert 'id="anomalyList"' in html
+    assert 'id="historyList"' in html
+    assert 'id="autoRefreshToggle"' in html
     assert "renderSnapshot" in script
     assert "refreshBackendHealth" in script
+    assert "refreshDashboardHistory" in script
+    assert "toggleAutoRefresh" in script
     assert "sessionStorage" in script
     assert "/api/auth/login" in script
     assert "/api/dashboard/snapshot" in script

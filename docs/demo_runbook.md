@@ -72,6 +72,19 @@ Invoke-RestMethod `
 
 This verifies telemetry, diagnostics, and recovery messages through Mosquitto.
 
+## 7. Show MQTT-To-Backend Bridge
+
+Run these in separate PowerShell windows:
+
+```powershell
+.\scripts\run_mqtt.ps1
+.\scripts\run_backend.ps1 -Port 8080
+.\scripts\run_mqtt_bridge.ps1 -BackendPort 8080
+.\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\scenario_degraded.json --mqtt
+```
+
+Then login to the dashboard and click Refresh.
+
 ## Talking Points
 
 - C++ simulates the embedded Linux device agent.

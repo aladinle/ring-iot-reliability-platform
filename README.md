@@ -78,6 +78,8 @@ Core reliability themes:
 - AI anomaly detection placeholder pipeline
 - Interactive web dashboard for local demos
 - SQLite event history with MySQL-ready repository boundary
+- Session-aware dashboard with auto-refresh and persisted history
+- MQTT-to-backend bridge for local end-to-end demos
 - Dockerized backend and MQTT broker setup
 - Unit and integration testing structure
 
@@ -152,6 +154,12 @@ Verify MQTT:
 
 ```powershell
 .\scripts\verify_mqtt.ps1
+```
+
+Print the full multi-window demo flow:
+
+```powershell
+.\scripts\run_full_demo.ps1
 ```
 
 Persisted history is available through:

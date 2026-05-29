@@ -31,6 +31,14 @@ def test_health_check() -> None:
     assert response.json() == {"status": "healthy"}
 
 
+def test_system_status() -> None:
+    response = client.get("/api/system/status")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "healthy"
+    assert response.json()["database_backend"] == "sqlite"
+
+
 def test_auth_login_and_me() -> None:
     token = login_token()
     response = client.get(

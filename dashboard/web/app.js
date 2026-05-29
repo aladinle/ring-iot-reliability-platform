@@ -70,6 +70,7 @@ const mockSnapshot = {
 };
 
 const sessionKey = "ring_iot_session";
+let autoRefreshTimer = null;
 
 function byId(id) {
   return document.getElementById(id);
@@ -191,6 +192,63 @@ async function refreshDashboardSnapshot() {
   }
 }
 
+async function refreshDashboardHistory() {
+  const session = getSession();
+  if (!session) {
+    byId("sessionStatus").textContent = "Session: signed out, login to load persisted history";
+    return;
+  }
+
+  const response = await fetch("http://127.0.0.1:8080/api/dashboard/history?limit=10", {
+    headers: {
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  renderHistory(await response.json());
+}
+
+function renderHistory(history) {
+  const rows = [
+    ...(history.telemetry || []).map((item) => ({
+      label: item.device_id,
+      kind: "telemetry",
+      detail: `${item.health_state} cpu=${Number(item.cpu_percent).toFixed(1)}%`
+    })),
+    ...(history.diagnostics || []).map((item) => ({
+      label: item.device_id,
+      kind: "diagnostics",
+      detail: `${item.severity} ${item.reason_code}`
+    })),
+    ...(history.recovery || []).map((item) => ({
+      label: item.device_id,
+      kind: "recovery",
+      detail: `${item.action} ${item.result} attempt=${item.attempt}`
+    })),
+    ...(history.anomalies || []).map((item) => ({
+      label: item.device_id,
+      kind: "anomaly",
+      detail: `${item.severity} score=${Number(item.score).toFixed(2)}`
+    }))
+  ];
+
+  byId("historyCount").textContent = `${rows.length} records`;
+  byId("historyList").innerHTML = rows.length
+    ? rows.slice(0, 12).map(renderHistoryItem).join("")
+    : `<div class="event"><strong>No persisted history</strong><p>Seed demo data to populate SQLite history.</p></div>`;
+}
+
+function renderHistoryItem(item) {
+  return `
+    <div class="event">
+      <strong>${escapeHtml(item.label)} - ${escapeHtml(item.kind)}</strong>
+      <p>${escapeHtml(item.detail)}</p>
+    </div>
+  `;
+}
+
 async function login(event) {
   event.preventDefault();
   const username = byId("usernameInput").value;
@@ -241,6 +299,21 @@ function updateSessionStatus() {
   byId("sessionStatus").textContent = `Session: ${session.username} (${session.role})`;
 }
 
+function toggleAutoRefresh() {
+  const enabled = byId("autoRefreshToggle").checked;
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
+  }
+
+  if (enabled) {
+    autoRefreshTimer = setInterval(refreshBackendHealth, 5000);
+    byId("autoRefreshStatus").textContent = "Auto refresh: every 5 seconds";
+  } else {
+    byId("autoRefreshStatus").textContent = "Auto refresh: off";
+  }
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -251,9 +324,11 @@ function escapeHtml(value) {
 }
 
 byId("refreshButton").addEventListener("click", refreshBackendHealth);
+byId("historyButton").addEventListener("click", refreshDashboardHistory);
 byId("mockButton").addEventListener("click", () => renderSnapshot(mockSnapshot));
 byId("logoutButton").addEventListener("click", logout);
 byId("loginForm").addEventListener("submit", login);
+byId("autoRefreshToggle").addEventListener("change", toggleAutoRefresh);
 
 renderSnapshot(mockSnapshot);
 updateSessionStatus();

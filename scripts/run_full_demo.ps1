@@ -1,0 +1,22 @@
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
+
+Write-Host "Run these commands in separate PowerShell windows for the full demo:"
+Write-Host ""
+Write-Host "1. Backend:"
+Write-Host "   .\scripts\run_backend.ps1 -Port 8080"
+Write-Host ""
+Write-Host "2. MQTT broker:"
+Write-Host "   .\scripts\run_mqtt.ps1"
+Write-Host ""
+Write-Host "3. MQTT bridge:"
+Write-Host "   .\scripts\run_mqtt_bridge.ps1 -BackendPort 8080"
+Write-Host ""
+Write-Host "4. Device simulator:"
+Write-Host "   .\device_simulator\build\Debug\device_simulator.exe .\device_simulator\config\scenario_degraded.json --mqtt"
+Write-Host ""
+Write-Host "5. Dashboard:"
+Write-Host "   Start-Process .\dashboard\web\index.html"
+Write-Host ""
+Write-Host "Login with operator / operator123, then click Refresh or enable auto refresh."
+

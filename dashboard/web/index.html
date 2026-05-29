@@ -16,6 +16,7 @@
         </div>
         <div class="actions">
           <button id="refreshButton" type="button">Refresh</button>
+          <button id="historyButton" type="button">Load History</button>
           <button id="mockButton" type="button">Load Mock Fleet</button>
           <button id="logoutButton" type="button">Logout</button>
         </div>
@@ -31,6 +32,17 @@
           <input id="passwordInput" type="password" autocomplete="current-password" value="operator123" aria-label="Password">
           <button type="submit">Login</button>
         </form>
+      </section>
+
+      <section class="login-panel" aria-label="Dashboard refresh mode">
+        <div>
+          <h2>Live Mode</h2>
+          <p id="autoRefreshStatus">Auto refresh: off</p>
+        </div>
+        <label class="toggle-row">
+          <input id="autoRefreshToggle" type="checkbox">
+          Refresh every 5 seconds
+        </label>
       </section>
 
       <section class="summary-grid" aria-label="Fleet health summary">
@@ -94,6 +106,14 @@
               <span id="anomalyCount">0 scores</span>
             </div>
             <div id="anomalyList" class="event-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>History</h2>
+              <span id="historyCount">0 records</span>
+            </div>
+            <div id="historyList" class="event-list"></div>
           </section>
         </aside>
       </section>

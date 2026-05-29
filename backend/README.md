@@ -23,6 +23,7 @@ FastAPI backend for telemetry ingestion, diagnostics coordination, alert process
 GET  /health
 POST /api/auth/login
 GET  /api/auth/me
+GET  /api/system/status
 POST /api/telemetry/ingest
 POST /api/diagnostics/ingest
 POST /api/recovery/ingest

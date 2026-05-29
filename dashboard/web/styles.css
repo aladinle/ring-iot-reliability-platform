@@ -116,6 +116,19 @@ input {
   padding: 0 10px;
 }
 
+.toggle-row {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.toggle-row input {
+  min-height: auto;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

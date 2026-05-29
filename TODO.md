@@ -90,3 +90,11 @@
 - Add SQLite persistence for telemetry, diagnostics, recovery, and anomaly history. `[done]`
 - Keep storage behind a repository boundary for future MySQL migration. `[done]`
 - Future enhancement: formatting, linting, release artifacts, and deployment target.
+
+## Week 11-16: Final Platform Readiness
+
+- Add session-aware dashboard authentication. `[done]`
+- Add dashboard auto-refresh and persisted history panel. `[done]`
+- Add backend MQTT bridge for local end-to-end demos. `[done]`
+- Add system status and centralized local settings. `[done]`
+- Add final release checklist and full demo script. `[done]`
