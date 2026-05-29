@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ring IoT Reliability Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>Ring IoT Reliability Dashboard</h1>
+          <p id="backendStatus">Backend status: not checked</p>
+        </div>
+        <div class="actions">
+          <button id="refreshButton" type="button">Refresh</button>
+          <button id="mockButton" type="button">Load Mock Fleet</button>
+        </div>
+      </header>
+
+      <section class="summary-grid" aria-label="Fleet health summary">
+        <article class="metric healthy">
+          <span>Healthy</span>
+          <strong id="healthyCount">0</strong>
+        </article>
+        <article class="metric degraded">
+          <span>Degraded</span>
+          <strong id="degradedCount">0</strong>
+        </article>
+        <article class="metric critical">
+          <span>Critical</span>
+          <strong id="criticalCount">0</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Fleet</h2>
+            <span id="deviceCount">0 devices</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Device</th>
+                  <th>State</th>
+                  <th>CPU</th>
+                  <th>Memory</th>
+                  <th>Temp</th>
+                  <th>Uptime</th>
+                </tr>
+              </thead>
+              <tbody id="deviceRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="side-stack">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Diagnostics</h2>
+              <span id="alertCount">0 alerts</span>
+            </div>
+            <div id="alertList" class="event-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Recovery</h2>
+              <span id="recoveryCount">0 events</span>
+            </div>
+            <div id="recoveryList" class="event-list"></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
+

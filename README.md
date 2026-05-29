@@ -76,6 +76,7 @@ Core reliability themes:
 - Dashboard-ready API surface
 - Dashboard data contracts and operator UI shell
 - AI anomaly detection placeholder pipeline
+- Interactive web dashboard for local demos
 - Dockerized backend and MQTT broker setup
 - Unit and integration testing structure
 

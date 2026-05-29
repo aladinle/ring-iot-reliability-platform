@@ -94,3 +94,21 @@ def test_recovery_ingest_records_started_recovery() -> None:
     assert response.status_code == 202
     assert response.json()["accepted"] is True
     assert response.json()["recovery_recorded"] is True
+
+
+def test_anomaly_score_returns_warning_for_degraded_telemetry() -> None:
+    response = client.post(
+        "/api/anomaly/score",
+        json={
+            "device_id": "ring-sim-degraded",
+            "cpu_percent": 84,
+            "memory_percent": 61,
+            "temperature_celsius": 52,
+            "uptime_seconds": 180,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["device_id"] == "ring-sim-degraded"
+    assert response.json()["is_anomaly"] is True
+    assert response.json()["severity"] == "warning"

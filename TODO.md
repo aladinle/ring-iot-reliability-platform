@@ -53,15 +53,17 @@
 - Add alerts and recovery history data models. `[done]`
 - Connect dashboard support layer to backend health API. `[done]`
 - Add operator-friendly mock snapshot and tests. `[done]`
+- Add interactive web dashboard for portfolio demo. `[done]`
 - Future enhancement: full Qt build integration and live backend polling.
 
 ## Week 7: AI Anomaly Detection
 
-- Define feature extraction pipeline.
-- Add baseline anomaly detection model.
-- Add inference service boundary.
-- Compare rule-based diagnostics with anomaly scores.
-- Document model limitations and validation strategy.
+- Define feature extraction pipeline. `[done]`
+- Add baseline anomaly detection model. `[done]`
+- Add inference service boundary. `[done]`
+- Add backend anomaly scoring endpoint. `[done]`
+- Add tests for normal, degraded, and critical telemetry. `[done]`
+- Document model limitations and validation strategy. `[done]`
 
 ## Week 8: Polish And Interview Prep
 

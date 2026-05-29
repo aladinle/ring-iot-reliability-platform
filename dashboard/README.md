@@ -38,6 +38,23 @@ Day 6 adds dashboard data contracts and a backend API client that a Qt UI can co
 - `dashboard/services/api_client/client.py`
 - `dashboard/ui/main_window/MainWindow.qml`
 - `dashboard/resources/fleet_snapshot.example.json`
+- `dashboard/web/index.html`
 
 The QML file is a UI shell. The Python data layer is tested in CI so dashboard-facing behavior has executable coverage without requiring Qt to be installed on every build runner.
 
+## Interactive Web Dashboard
+
+Open the static dashboard in a browser:
+
+```powershell
+Start-Process .\dashboard\web\index.html
+```
+
+The web dashboard provides:
+
+- Fleet health summary.
+- Device telemetry table.
+- Diagnostics list.
+- Recovery history list.
+- Backend health refresh button.
+- Mock fleet reload button.

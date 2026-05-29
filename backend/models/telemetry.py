@@ -18,3 +18,18 @@ class TelemetryIngestResponse(BaseModel):
     health_state: str
     message: str
 
+
+class AnomalyScoreRequest(BaseModel):
+    device_id: str = Field(..., min_length=1)
+    cpu_percent: float = Field(..., ge=0, le=100)
+    memory_percent: float = Field(..., ge=0, le=100)
+    temperature_celsius: float
+    uptime_seconds: int = Field(..., ge=0)
+
+
+class AnomalyScoreResponse(BaseModel):
+    device_id: str
+    score: float = Field(..., ge=0, le=1)
+    reason: str
+    severity: str
+    is_anomaly: bool
