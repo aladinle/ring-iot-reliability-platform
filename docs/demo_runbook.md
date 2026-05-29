@@ -34,6 +34,12 @@ In another PowerShell window:
 .\scripts\seed_demo_data.ps1 -Port 8080
 ```
 
+For a large dashboard test:
+
+```powershell
+.\scripts\seed_1000_devices.ps1 -Port 8080
+```
+
 ## 4. Open Dashboard
 
 ```powershell

@@ -144,6 +144,12 @@ Seed demo data:
 .\scripts\seed_demo_data.ps1 -Port 8080
 ```
 
+Seed 1000 generated testing devices:
+
+```powershell
+.\scripts\seed_1000_devices.ps1 -Port 8080
+```
+
 Open the dashboard:
 
 ```powershell

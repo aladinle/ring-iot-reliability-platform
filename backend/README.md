@@ -53,3 +53,9 @@ Demo credentials:
 operator / operator123
 admin    / admin123
 ```
+
+Large local test seed:
+
+```powershell
+.\scripts\seed_1000_devices.ps1 -Port 8080
+```
