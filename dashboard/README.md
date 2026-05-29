@@ -52,6 +52,7 @@ Start-Process .\dashboard\web\index.html
 
 The web dashboard provides:
 
+- Demo login and session display.
 - Fleet health summary.
 - Device telemetry table.
 - Diagnostics list.
@@ -60,4 +61,4 @@ The web dashboard provides:
 - Backend health refresh button.
 - Mock fleet reload button.
 
-When the backend is running at `http://127.0.0.1:8080`, the Refresh button also loads `GET /api/dashboard/snapshot`.
+When the backend is running at `http://127.0.0.1:8080`, login as `operator / operator123`. The Refresh button then loads `GET /api/dashboard/snapshot` using the session token.

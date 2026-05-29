@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 
 from backend.main import app
 from backend.services.event_store import event_store
+from backend.services.auth_service import auth_service
 
 
 client = TestClient(app)
@@ -9,6 +10,16 @@ client = TestClient(app)
 
 def setup_function() -> None:
     event_store.clear()
+    auth_service.clear()
+
+
+def login_token() -> str:
+    response = client.post(
+        "/api/auth/login",
+        json={"username": "operator", "password": "operator123"},
+    )
+    assert response.status_code == 200
+    return response.json()["access_token"]
 
 
 def test_health_check() -> None:
@@ -16,6 +27,23 @@ def test_health_check() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
+
+
+def test_auth_login_and_me() -> None:
+    token = login_token()
+    response = client.get(
+        "/api/auth/me",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"username": "operator", "role": "operator"}
+
+
+def test_dashboard_snapshot_requires_session() -> None:
+    response = client.get("/api/dashboard/snapshot")
+
+    assert response.status_code == 403
 
 
 def test_telemetry_ingest_returns_healthy_state() -> None:
@@ -120,6 +148,7 @@ def test_anomaly_score_returns_warning_for_degraded_telemetry() -> None:
 
 
 def test_dashboard_snapshot_returns_live_ingested_events() -> None:
+    token = login_token()
     client.post(
         "/api/telemetry/ingest",
         json={
@@ -161,7 +190,10 @@ def test_dashboard_snapshot_returns_live_ingested_events() -> None:
         },
     )
 
-    response = client.get("/api/dashboard/snapshot")
+    response = client.get(
+        "/api/dashboard/snapshot",
+        headers={"Authorization": f"Bearer {token}"},
+    )
 
     assert response.status_code == 200
     payload = response.json()

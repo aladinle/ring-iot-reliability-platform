@@ -69,6 +69,8 @@ const mockSnapshot = {
   ]
 };
 
+const sessionKey = "ring_iot_session";
+
 function byId(id) {
   return document.getElementById(id);
 }
@@ -169,7 +171,17 @@ async function refreshBackendHealth() {
 }
 
 async function refreshDashboardSnapshot() {
-  const response = await fetch("http://127.0.0.1:8080/api/dashboard/snapshot");
+  const session = getSession();
+  if (!session) {
+    byId("sessionStatus").textContent = "Session: signed out, login to load backend dashboard";
+    return;
+  }
+
+  const response = await fetch("http://127.0.0.1:8080/api/dashboard/snapshot", {
+    headers: {
+      Authorization: `Bearer ${session.access_token}`
+    }
+  });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);
   }
@@ -177,6 +189,56 @@ async function refreshDashboardSnapshot() {
   if ((payload.devices || []).length > 0) {
     renderSnapshot(payload);
   }
+}
+
+async function login(event) {
+  event.preventDefault();
+  const username = byId("usernameInput").value;
+  const password = byId("passwordInput").value;
+  const response = await fetch("http://127.0.0.1:8080/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  });
+
+  if (!response.ok) {
+    byId("sessionStatus").textContent = "Session: login failed";
+    return;
+  }
+
+  const payload = await response.json();
+  sessionStorage.setItem(sessionKey, JSON.stringify(payload));
+  updateSessionStatus();
+  await refreshBackendHealth();
+}
+
+function logout() {
+  sessionStorage.removeItem(sessionKey);
+  updateSessionStatus();
+}
+
+function getSession() {
+  const raw = sessionStorage.getItem(sessionKey);
+  if (!raw) {
+    return null;
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    sessionStorage.removeItem(sessionKey);
+    return null;
+  }
+}
+
+function updateSessionStatus() {
+  const session = getSession();
+  if (!session) {
+    byId("sessionStatus").textContent = "Session: signed out";
+    return;
+  }
+  byId("sessionStatus").textContent = `Session: ${session.username} (${session.role})`;
 }
 
 function escapeHtml(value) {
@@ -190,6 +252,9 @@ function escapeHtml(value) {
 
 byId("refreshButton").addEventListener("click", refreshBackendHealth);
 byId("mockButton").addEventListener("click", () => renderSnapshot(mockSnapshot));
+byId("logoutButton").addEventListener("click", logout);
+byId("loginForm").addEventListener("submit", login);
 
 renderSnapshot(mockSnapshot);
+updateSessionStatus();
 refreshBackendHealth();

@@ -42,6 +42,12 @@ Start-Process .\dashboard\web\index.html
 
 Click `Refresh` to load backend-backed fleet state.
 
+Demo login:
+
+```text
+operator / operator123
+```
+
 ## 5. Show MQTT Flow
 
 ```powershell
@@ -57,4 +63,3 @@ This verifies telemetry, diagnostics, and recovery messages through Mosquitto.
 - FastAPI normalizes events for dashboard and AI workflows.
 - The dashboard exposes fleet health, diagnostics, recovery, and anomaly state.
 - AI anomaly detection supports rule-based diagnostics rather than replacing them.
-

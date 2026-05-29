@@ -12,12 +12,26 @@
         <div>
           <h1>Ring IoT Reliability Dashboard</h1>
           <p id="backendStatus">Backend status: not checked</p>
+          <p id="sessionStatus">Session: signed out</p>
         </div>
         <div class="actions">
           <button id="refreshButton" type="button">Refresh</button>
           <button id="mockButton" type="button">Load Mock Fleet</button>
+          <button id="logoutButton" type="button">Logout</button>
         </div>
       </header>
+
+      <section class="login-panel" aria-label="Operator login">
+        <div>
+          <h2>Operator Session</h2>
+          <p>Demo login: operator / operator123</p>
+        </div>
+        <form id="loginForm">
+          <input id="usernameInput" type="text" autocomplete="username" value="operator" aria-label="Username">
+          <input id="passwordInput" type="password" autocomplete="current-password" value="operator123" aria-label="Password">
+          <button type="submit">Login</button>
+        </form>
+      </section>
 
       <section class="summary-grid" aria-label="Fleet health summary">
         <article class="metric healthy">

@@ -21,6 +21,8 @@ FastAPI backend for telemetry ingestion, diagnostics coordination, alert process
 
 ```text
 GET  /health
+POST /api/auth/login
+GET  /api/auth/me
 POST /api/telemetry/ingest
 POST /api/diagnostics/ingest
 POST /api/recovery/ingest
@@ -29,3 +31,10 @@ GET  /api/dashboard/snapshot
 ```
 
 The dashboard snapshot endpoint is backed by an in-memory event store for local demos. It is intentionally simple and can be replaced by durable storage later.
+
+Demo credentials:
+
+```text
+operator / operator123
+admin    / admin123
+```
